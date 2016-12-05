@@ -2,12 +2,13 @@
 
 $(document).on('turbolinks:load', function() {
   var theForm = $('#pro_form');
-  var submitBtn = $('#form-submit-btn');
+  var submitBtn = $('#form-signup-btn');
   
-  Stripe.setPublishableKey( $('meta[="stripe-key"]').attr('content') );
+  Stripe.setPublishableKey( $('meta[name="stripe-key"]').attr('content') );
   
   submitBtn.click(function(event){
     event.preventDefault();
+    submitBtn.val("Processing").prop('disabled', true);
     
     var ccNum = $('#card_number').val(),
         cvcNum = $('#card_code').val(),
@@ -47,7 +48,7 @@ $(document).on('turbolinks:load', function() {
   function stripeResponseHandler(status, response) {
     var token = response.id;
     
-    theForm .append( $('<input type="hidden" name="user[stripe_card_token]">').val(token) );
+    theForm.append( $('<input type="hidden" name="user[stripe_card_token]">').val(token) );
     
     theForm.get(0).submit();
   };
